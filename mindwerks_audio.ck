@@ -134,15 +134,6 @@ out.right => finalD[1] => finalP.right;
 finalD[0].limit();
 finalD[1].limit();
 
-fun void kick()
-{
-    // Creating a new kick buffer each time removes the click 
-    // when the pos gets set to 0 in the middle of playback
-    SndBuf kickBuf => samples;
-    // Adding the oscillating playback rate makes the kick seems less mechanical
-    playSample(kickBuf, "kick_01.wav", 0.7, 0.6);
-}
-
 /////////////////////////////////////////
 
 // Most of these frequencies are sub-hearing range
@@ -215,41 +206,6 @@ fun float scaleNoteToFreq(int note)
     return Std.mtof(scale[n]+octave*12);
 }
 
-me.dir()+"/audio/" => string path;
-// Play a sample at a certain speed
-fun void playSample(SndBuf sample, string file, float gain, float speed)
-{
-    path+file => sample.read;
-    gain => sample.gain;
-    
-    speed => sample.rate;
-    if(speed >= 0) {
-        0 => sample.pos;
-    } else {
-        sample.samples() => sample.pos;
-    }
-    <<< file >>>;
-}
-
-// Play a sample at a speed that forces it to play within a length of time
-fun void playSample2(SndBuf sample, string file, float gain, float length)
-{
-    path+file => sample.read;
-    gain => sample.gain;
-    
-    sample.length() / length::second=> float speed;
-    
-    <<< speed >>>;
-    
-    speed => sample.rate;
-    if(speed >= 0) {
-        0 => sample.pos;
-    } else {
-        sample.samples() => sample.pos;
-    }
-    
-    <<< file >>>;
-}
 
 // I saw this in the ducker example, you need to manually feed 
 // in the samples to the side chain compressor, so I replaced all

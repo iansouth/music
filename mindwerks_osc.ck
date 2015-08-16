@@ -3,7 +3,10 @@ OscRecv recv;
 recv.listen();
 
 OscSend xmit;
-xmit.setHost("192.168.1.255", 9000);
+xmit.setHost("localhost", 9001);
+
+OscSend xmit2;
+xmit2.setHost("localhost", 9002);
 
 public class Mindwave {
     static float meditation;
@@ -59,6 +62,7 @@ fun void osc_meditation()
 			e.getFloat() => f;
 			for(0 => int i; i < meditation.cap(); ++i) 
 				f => meditation[i].target;
+			re_med(f);
 		}
 	}
 }
@@ -74,6 +78,7 @@ fun void osc_attention()
 			e.getFloat() => f;
 			for(0 => int i; i < attention.cap(); ++i) 
 				f  => attention[i].target;
+			re_att(f);
 		}
 	}
 }
@@ -98,6 +103,24 @@ fun void osc_EEG()
 	}
 }
 
+fun void re_med(float f)
+{
+	xmit.startMsg("/mindwave/1/meditation, f");
+	f => xmit.addFloat;
+	xmit2.startMsg("/mindwave/1/meditation, f");
+	f => xmit2.addFloat;
+}
+
+fun void re_att(float f)
+{
+	xmit.startMsg("/mindwave/1/attention, f");
+	f => xmit.addFloat;
+	xmit2.startMsg("/mindwave/1/attention, f");
+	f => xmit2.addFloat;
+	
+}
+
+/*
 fun void osc_meditation_smooth()
 {
 	while( true ) {
@@ -119,22 +142,24 @@ fun void osc_attention_smooth()
 		0.1::second => now;
 	}
 }
+*/
 
 spork ~ osc_signal();
 spork ~ osc_meditation();
 spork ~ osc_attention();
-spork ~ osc_meditation_smooth();
-spork ~ osc_attention_smooth();
+//spork ~ osc_meditation_smooth();
+//spork ~ osc_attention_smooth();
 //spork ~ osc_EEG();
 me.yield();
 
 Mindwave mindwave;
 
 while(true) {
-	//<<< mindwave.meditation, mindwave.attention >>>;
+    //<<< mindwave.meditation, mindwave.attention >>>;
     //for(0 => int i; i < 8; ++i)
     //    <<< EEG[i].value() >>>;
 	//0.1::second => now;
+
     1::samp => now;
     //for(0 => int i; i < 8; ++i) {
     //    EEG[i].value() => mindwave.EEG[i];
