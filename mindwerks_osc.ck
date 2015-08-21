@@ -1,12 +1,6 @@
 OscRecv recv;
-9000 => recv.port;
+9003 => recv.port;
 recv.listen();
-
-OscSend xmit;
-xmit.setHost("localhost", 9001);
-
-OscSend xmit2;
-xmit2.setHost("localhost", 9002);
 
 public class Mindwave {
     static float meditation;
@@ -62,7 +56,6 @@ fun void osc_meditation()
 			e.getFloat() => f;
 			for(0 => int i; i < meditation.cap(); ++i) 
 				f => meditation[i].target;
-			re_med(f);
 		}
 	}
 }
@@ -78,7 +71,6 @@ fun void osc_attention()
 			e.getFloat() => f;
 			for(0 => int i; i < attention.cap(); ++i) 
 				f  => attention[i].target;
-			re_att(f);
 		}
 	}
 }
@@ -101,23 +93,6 @@ fun void osc_EEG()
             }
 		}
 	}
-}
-
-fun void re_med(float f)
-{
-	xmit.startMsg("/mindwave/1/meditation, f");
-	f => xmit.addFloat;
-	xmit2.startMsg("/mindwave/1/meditation, f");
-	f => xmit2.addFloat;
-}
-
-fun void re_att(float f)
-{
-	xmit.startMsg("/mindwave/1/attention, f");
-	f => xmit.addFloat;
-	xmit2.startMsg("/mindwave/1/attention, f");
-	f => xmit2.addFloat;
-	
 }
 
 /*
