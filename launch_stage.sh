@@ -9,4 +9,5 @@ sleep 1
 chuck --loop --dac:$OUTPUT --adc:$INPUT &
 sleep 1
 chuck + lick-import.ck
+sleep 1
 chuck + effects/drone_stack.ck

@@ -83,23 +83,26 @@ Dyno ducker[2];
 Pan2 out;
 Gain subBassIN;
 
-chordIN.left  => Echo e0 => r[0] => chordOUT.left  => d[0] => d[1] => ducker[0] => out.left;
-chordIN.right => Echo e1 => r[1] => chordOUT.right => d[1] => d[0] => ducker[1] => out.right;
+chordIN.left  => /*Echo e0 => r[0] =>*/ chordOUT.left  => d[0] => d[1] => ducker[0] => out.left;
+chordIN.right => /*Echo e1 => r[1] =>*/ chordOUT.right => d[1] => d[0] => ducker[1] => out.right;
 
 Pan2 pan; // Panning for the chords
 
 SinOsc   subBass[6];
 BeeThree     inst[4];
-NRev   inst_rev[inst.cap()];
-inst_rev[3] =>  pan => chordIN;
-inst_rev[2] =>  pan => chordIN;
-inst_rev[1] =>  pan => chordIN;
-inst_rev[0] => pan => chordIN;
+NRev   inst_rev;
+Drone droneMetal;
+1.0 => droneMetal.pre.gain;
+
+inst_rev => droneMetal => chordIN;
+inst_rev => droneMetal => chordIN;
+inst_rev => droneMetal => chordIN;
+inst_rev => droneMetal => chordIN;
 
 for( 0 => int i; i < inst.cap(); ++i) {
-    inst[i] => inst_rev[i]; 
-    0.9 => inst_rev[i].gain;
-    0.2 => inst_rev[i].mix;
+    inst[i] => inst_rev; 
+    0.9 => inst_rev.gain;
+    0.2 => inst_rev.mix;
     /*
     i => inst[i].phonemeNum;
     1.0 => inst[i].vibratoFreq;

@@ -17,7 +17,7 @@ with tone, of course. That was a real game-changer, that piece of gear.
 
 // split mono in to four separate channelsdac => Gain pre;
 
-class Drone extends Chubgraph
+public class Drone extends Chubgraph
 {
     inlet => Gain pre;
     pre => Gain in0;
@@ -49,10 +49,10 @@ class Drone extends Chubgraph
         }
     }
 
-    in0 => MonoDelay2 delay0 => Amp amp0 => Cabinet cabinet0 => GVerb gverb0 => out0;
-    in2 => MonoDelay2 delay2 => Amp amp2 => Cabinet cabinet2 => GVerb gverb2 => out2;
-    in1 => Invert inv1 => MonoDelay2 delay1 => Amp amp1 => Cabinet cabinet1 => GVerb gverb1 => out1;
-    in3 => Invert inv3 => MonoDelay2 delay3 => Amp amp3 => Cabinet cabinet3 => GVerb gverb3 => out3;
+    in0 => DigitalDelay delay0 => Amp amp0 => Cabinet cabinet0 => GVerb gverb0 => out0;
+    in2 => DigitalDelay delay2 => Amp amp2 => Cabinet cabinet2 => GVerb gverb2 => out2;
+    in1 => Invert inv1 => DigitalDelay delay1 => Amp amp1 => Cabinet cabinet1 => GVerb gverb1 => out1;
+    in3 => Invert inv3 => DigitalDelay delay3 => Amp amp3 => Cabinet cabinet3 => GVerb gverb3 => out3;
 
 
     1.0 => delay0.mix;
